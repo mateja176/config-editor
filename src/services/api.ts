@@ -7,7 +7,7 @@ const configuration = new Configuration({
   basePath,
   apiKey: () => {
     const token = getApiToken();
-    return token ? `Authorization: Bearer ${token}` : '';
+    return token ?? '';
   },
 });
 
