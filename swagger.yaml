@@ -1,0 +1,229 @@
+openapi: 3.0.0
+info:
+  title: Team Sava React Home Assignment
+  description: API Specification for frontend challenge in Team Sava
+  version: 0.1.9
+servers:
+  - url: https://l5ov8zep98.execute-api.us-west-2.amazonaws.com/api
+    description: API Server 
+
+components:
+  securitySchemes:
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
+      
+paths:
+  /register:
+    post:
+      summary: Creates a new user.
+      requestBody:
+        description: Optional description in *Markdown*
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+                - password2
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                password2:
+                  type: string
+      responses:
+        '201':
+          description: OK
+        '400':
+          description: Bad request
+        '403':
+          description: User already exists
+        '5XX':
+          description: Unexpected error.
+          content: 
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Code: 
+                    type: string
+                  Message:
+                    type: string
+          
+  /login:
+    post:
+      summary: Creates a new user.
+      requestBody:
+        description: Optional description in *Markdown*
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+        '400':
+          description: Bad request
+        '5XX':
+          description: Unexpected error.
+          content: 
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Code: 
+                    type: string
+                  Message:
+                    type: string
+          
+  /config:
+    get: 
+      summary: Lists all configuraions.
+      security:
+        - Bearer: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    name:
+                      type: string
+                    version:
+                      type: string
+        '401':
+          description: Authorization information is missing or invalid.
+        '5XX':
+          description: Unexpected error.
+          content: 
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Code: 
+                    type: string
+                  Message:
+                    type: string
+
+    post:
+      summary: Creates a new configuraion
+      security:
+        - Bearer: []
+      requestBody:
+        description: Optional description in *Markdown*
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - version
+                - data
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                data:
+                  type: object
+      responses:
+        '201':
+          description: Created
+        '400':
+          description: Bad request
+        '401':
+          description: Authorization information is missing or invalid.
+        '409':
+          description: Configuration with same name and version exists
+        '5XX':
+          description: Unexpected error.
+          content: 
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Code: 
+                    type: string
+                  Message:
+                    type: string
+                
+
+  /config/{name}:
+    get: 
+      summary: Retrieve specific configuration
+      parameters:
+        - in: path
+          name: name
+          schema:
+            type: string
+          required: true
+          description: Name of the configuration
+        - in: query
+          name: version
+          schema:
+            type: string
+          required: true
+          description: Version of the configuraion
+      security:
+        - Bearer: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  version:
+                    type: string
+                  data:
+                    type: object
+        '401':
+          description: Authorization information is missing or invalid.
+        '404':
+          description: A configuration with the specified name and version was not found.
+        '5XX':
+          description: Unexpected error.
+          content: 
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Code: 
+                    type: string
+                  Message:
+                    type: string
+          
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"
