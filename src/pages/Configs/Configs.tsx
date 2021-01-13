@@ -94,11 +94,13 @@ const Configs: React.FC<ConfigsProps> = (props) => {
               >
                 <Card>
                   <Flex justifyContent="space-between">
-                    <Text>{configOverview.config_name}</Text>
                     <Flex>
-                      <Text color="blue.500">v</Text>
+                      <Text>{configOverview.config_name}</Text>
                       &nbsp;
-                      {configOverview.config_version}
+                      <Flex>
+                        <Text color="blue.500">v</Text>
+                        {configOverview.config_version}
+                      </Flex>
                     </Flex>
                     <Button
                       onClick={() => {
